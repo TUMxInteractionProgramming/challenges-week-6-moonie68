@@ -48,8 +48,8 @@ function switchChannel(channelObject, channelElement) {
     //#9 selector adjusted for #btns #str
     $('#channel-star i').removeClass('fas far');
     $('#channel-star i').addClass(channelObject.starred ? 'fas' : 'far');
-
-
+    //add class for channel element
+    $(channelElement).addClass("selected")
     /* highlight the selected #channel.
        This is inefficient (jQuery has to search all channel list items), but we'll change it later on */
     $('#channels li').removeClass('selected');
