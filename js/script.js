@@ -57,6 +57,7 @@ function switchChannel(channelObject, channelElement) {
 
     /* store selected channel in global variable */
     currentChannel = channelObject;
+
 }
 
 /* liking a channel on #click */
