@@ -26,10 +26,11 @@ var currentLocation = {
 /**
  * Switch channels name in the right app bar
  * @param channelObject
+ * @param channelElement
  */
-function switchChannel(channelObject) {
+function switchChannel(channelObject, channelElement) {
     // Log the channel switch
-    console.log("Tuning in to channel", channelObject);
+    console.log("Tuning in to channel", channelObject, channelElement);
 
     // #10 #new: switching channels aborts "create new channel"-mode
     abortCreationMode();
@@ -217,7 +218,8 @@ function compareFavorites(channelA, channelB) {
 function listChannels(criterion) {
     // #10 #sorting: #sort channels#array by the criterion #parameter
     channels.sort(criterion);
-
+    //current channel select
+    currentChannel=sevencontinents;
     // #10 #sorting #duplicate: empty list
     $('#channels ul').empty();
 
@@ -310,7 +312,10 @@ function createChannelElement(channelObject) {
 
     // create a channel
     var channel = $('<li>').text(channelObject.name);
-
+    //#11 click event listener
+    $("li").click(listener)
+    //#10 call swichChannel
+    $(this).call(switchChannel)
     // create and append channel meta
     var meta = $('<span>').addClass('channel-meta').appendTo(channel);
 
