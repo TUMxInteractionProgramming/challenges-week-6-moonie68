@@ -4,161 +4,126 @@
     <meta charset="UTF-8">
     <title>chatter|app</title>
 
-    <!-- embed the roboto font. This needs to go above your css -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+    <!-- #4 embed the #roboto #font. This needs to go above your css -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <!-- embed external css -->
+    <!-- #4 #sweat out the styles by creating an #external css -->
     <link rel="stylesheet" href="css/style.css"/>
 
-    <!-- embed jquery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- #6 embed #jquery -->
+    <script   src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
-    <!-- embed font awesome -->
+    <!-- #7 #icns #fa embed font awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
-    <!-- embed external JavaScript file for channel objects -->
+
+    <!-- #7 #chlob #lnk: we model our channels there -->
     <script src="js/channels.js"></script>
 
-    <!-- #10 #embed the #emojis source from https://github.com/Kikobeats/emojis-list -->
-    <script src="js/emojis-list.js" type="text/javascript" charset="utf-8"></script>
-
-    <!-- embed external JavaScript file for app interaction -->
+    <!-- #6 #external #action-->
     <script src="js/script.js"></script>
 
+    <!-- #10 get emojis-->
+    <script src="js/emojis-list.js" type="text/javascript" charset="utf-8"></script>
+    
 </head>
 
-<!-- render all channels when the body has loaded -->
-<!-- #10 #sorting: append all channels in new #sort order when the body has #load ed ; #10 #emojis added more #suitable-->
-<body onload="listChannels(compareNew); loadEmojis()">
+<!-- #10 #channel #append all channels when the body has loaded, load emojis when body has loded, cf. $(document).ready(function () in srcipt.js -->
+<body>
 
-<!-- channel area -->
-<!-- #9 #shdw #elv: channels view goes 16dp high, like a nav drawer -->
-<div id="channels" class="shadow--16dp">
+<!-- #4 #one #page: merge channels.html into new div (1) -->
+<div id="channels" class="shadow--16dp"><!-- #9 #shdw #elv: channels view goes 16dp high, like a nav drawer -->
 
-    <!-- APP BAR for APP TITLE -->
-    <!-- #9 #shdw #elv: app bar goes 4dp high -->
-    <h1 id="left-app-bar" class="shadow--4dp">
-        <img src="http://ip.lfe.mw.tum.de/sections/moocus.png" alt="Moocus, the chatty duck!" style="height: 56px;">
+    <!-- APP BAR #1 for APP TITLE -->
+    <h1 id="left-app-bar" class="shadow--4dp"><!-- #9 #shdw #elv: app bar goes 4dp high -->
+        <img src="http://ip.lfe.mw.tum.de/sections/moocus.png" alt="Moocus, the goose!" style="height: 56px;">
         chatter|app
     </h1>
 
-    <!-- CHANNELS -->
-    <ul>
-       <!-- Channels are added dynamically in listChannels() -->
+    <!-- CHANNELS. #4 #sweat #channels by id -->
+    <ul id="channels-ul">
     </ul>
 
     <!-- #9 #flt #btn: FLOATING ACTION BUTTON -->
-    <button id="add-channel" class="accent shadow--6dp" onclick="initCreationMode()"><i class="fas fa-plus"></i></button>
+    <button id="add-channel" class="accent shadow--6dp" onclick="addChannel()"><i class="fas fa-plus"></i></button>
 
-    <!-- TAB BAR -->
-    <!-- #9 #shdw #elv: tab bar goes 4dp high -->
-    <div id="tab-bar" class="shadow--4dp">
-        <!-- #10 adjust the #sort order on #click -->
-        <button class="selected" id="tab-new" onclick="selectTab('#tab-new'); listChannels(compareNew)">
+    <!-- TAB BAR #4 #sweat #tab-bar -->
+    <div id="tab-bar" class="shadow--4dp"><!-- #9 #shdw #elv: tab bar goes 4dp high -->
+        <!-- #4 the first selected #tab-bar button is #highlight due to the class-->
+        <!-- #6 #taptab buttons are getting ids with #hyphens and a #change listener calling selectTab.
+             Pass the #argument to select Tab -->
+        <button class="selected" id="tab-new" onclick="selectTab('#tab-new');listChannels(compareDate)">
+            <!-- #7 #icns #tab replacing icons -->
             <i class="far fa-lightbulb"></i>
             New
         </button>
-        <!-- #10 adjust the #sort order on #click -->
-        <button id="tab-trending" onclick="selectTab('#tab-trending'); listChannels(compareTrending)">
+        <button id="tab-trending" onclick="selectTab('#tab-trending');listChannels(compareMessageCount)">
+            <!-- #7 #icns #tab replacing icons -->
             <i class="fas fa-fire"></i>
             Trending
         </button>
-        <!-- #10 adjust the #sort order on #click -->
-        <button id="tab-favorites" onclick="selectTab('#tab-favorites'); listChannels(compareFavorites)">
+        <button id="tab-favorites" onclick="selectTab('#tab-favorites');listChannels(compareStarred)">
+            <!-- #7 #icns #tab replacing icons -->
             <i class="fas fa-star"></i>
             Favorites
         </button>
     </div>
 </div>
 
+<!-- #4 #one #page: merge chat.html into new div (2) -->
 <div id="chat">
 
-    <!-- APP BAR for CHANNEL TITLE -->
-    <!-- #9 #shdw #elv: app bar goes 4dp high -->
-    <!-- #10 #new: assign an id to the h1 element to be able to address it -->
-    <h1 id="app-bar-messages" class="shadow--4dp">
+    <!-- APP BAR #2 for CHANNEL TITLE-->
+    <h1 id="right-app-bar" class="shadow--4dp"><!-- #9 #shdw #elv: app bar goes 4dp high -->
+        <!-- #4 #page remove #hyperlink and chevron -->
+        <!-- #6 #channels #switcher needs to identify the channel name, so let's give it an ID -->
         <span id="channel-name">#SevenContinents</span>
+        <!-- #6 #channels #location also needs an id -->
         <small id="channel-location">by <strong>cheeses.yard.applies</strong></small>
-        <!-- #9 #btns #str: a new primary button now contains the icon -->
+        <!-- #6 #liking channels requires a #filled star / with its #click listener -->
+        <!-- #7 #icns #str: star is now font-awesome -->
+        <!-- #btns-str: a new primary button now contains the icon -->
         <button id="channel-star" class="primary" onclick="star()">
             <i class="fas fa-star"></i>
         </button>
     </h1>
 
-    <!-- #10 APP BAR for #new channels with #styled elements -->
-    <h1 id="app-bar-create" class="shadow--4dp">
-        <!-- #10 #new input field for channel #name -->
-        <input type="text" id="new-channel" placeholder="Enter a #ChannelName"/>
-        <button class="primary" onclick="abortCreationMode()"><i class="fas fa-times"></i> Abort</button>
+    <!-- APP BAR for adding channel -->
+    <h1 id="channel-bar" class="shadow--4dp"><!-- #9 #shdw #elv: app bar goes 4dp high -->
+    <input id="channel-input-id" type="text" placeholder="Enter a #ChannelName and press enter..." maxlength="140" onkeydown="if(event.keyCode==13) createChannel();">
+        <button id="channel-abort" class="primary" onclick="closeChannelBar()"> 
+            <i class="fas fa-times"></i> Abort
+        </button>
+    
     </h1>
-
+    
+    
+    <!-- #5 #messages are now wrapped in a div to #scroll properly */ -->
     <div id="messages">
 
-        <!-- #10 #delete all #message s (or comment them out)-->
-        <!--
-        <div class="message own">
-            <h3><a href="http://w3w.co/cheeses.yard.applies" target="_blank"><strong>cheeses.yard.applies</strong></a>
-                Wed, June 20th, 13:37 <em>15 min. left</em></h3>
-            <p>What's the place you folks call home?</p>
-            <button class="accent">+5 min.</button>
-        </div>
-
-        <div class="message">
-            <h3><a href="http://w3w.co/truck.cotton.zone" target="_blank"><strong>truck.cotton.zone</strong></a>
-                Wed, June 20th, 13:39 <em>4 min. left</em></h3>
-            <p>BRISBANE! Hang loose!</p>
-            <button class="accent">+5 min.</button>
-        </div>
-
-        <div class="message">
-            <h3><a href="http://w3w.co/thus.best.dishes" target="_blank"><strong>thus.best.dishes</strong></a>
-                Wed, June 20th, 14:02 <em>12 min. left</em></h3>
-            <p>The big apple.</p>
-            <button class="accent">+5 min.</button>
-        </div>
-
-        <div class="message">
-            <h3><a href="http://w3w.co/driveway.helper.magazine"
-                   target="_blank"><strong>driveway.helper.magazine</strong></a>
-                Wed, June 20th, 14:02 <em>7 min. left</em></h3>
-            <p>Eu sou um Cariocas.</p>
-            <button class="accent">+5 min.</button>
-        </div>
-
-        <div class="message">
-            <h3><a href="http://w3w.co/escapes.pitch.saucepan"
-                   target="_blank"><strong>escapes.pitch.saucepan</strong></a>
-                Wed, June 20th, 14:07 <em>14 min. left</em></h3>
-            <p>Greetings from the western cape!</p>
-            <button class="accent">+5 min.</button>
-        </div>
-
-        <div class="message">
-            <h3><a href="http://w3w.co/meanings.identity.pays"
-                   target="_blank"><strong>meanings.identity.pays</strong></a>
-                Wed, June 20th, 04:08 <em>15 min. left</em></h3>
-            <p>北京</p>
-            <button class="accent">+5 min.</button>
-        </div>
-        -->
+      <!-- #10 #messages are removed */ -->
 
     </div>
 
-    <!-- ChAT BAR -->
-    <!-- #9 #shdw #elv: app bar goes 4dp high -->
-    <div id="chat-bar" class="shadow--4dp">
-        <!-- #9 #btns #sml now primary -->
-        <button id="emojis-button" class="primary" onclick="toggleEmojis()">
+    <!-- #5 #smileys #insert the chat-bar -->
+    <div id="chat-bar" class="shadow--4dp"><!-- #9 #shdw #elv: app bar goes 4dp high -->
+        
+        <button id="emojis-button" class="primary" onclick="toggleEmojis()"> <!-- #9 #btns #sml now primary -->
+            <!-- #7 #icns #smile replacing icons -->
             <i class="far fa-smile"></i>
         </button>
-        <!-- #9 #shdw #elv: menu goes 8dp high -->
-        <div id="emojis" class="shadow--8dp">&#x1F601; &#x1F602; &#x1F603; &#x1F604; &#x1F605; &#x1F606; &#x1F607;</div>
-        <input type="text" placeholder="Message..." maxlength="140" id="message">
-        <!-- #9 #btns #snd now accented -->
-        <!-- #10 #new: id added to be able to address it -->
-        <button id="button-send" class="accent" onclick="sendMessage()"><i class="fas fa-arrow-right"></i></button>
-        <!-- #10: #new #styled button for creating a channel -->
-        <button id="button-create" class="accent" onclick="createChannel();">CREATE</button>
+        <div id="emojis" class="shadow--8dp"></div><!-- #9 #shdw #elv: menu goes 8dp high -->
+        <!-- #8 create a new #input #element which accepts text and has a #prefill as well as a character #imit.
+       For #real, it also gets an id -->
+        <input type="text" placeholder="Message..." maxlength="140" id="message" name="MessageInputField" onkeydown="if(event.keyCode==13) sendMessage(); CountCharacter(this)" onkeyup="CountCharacter(this)">
+        
+        <!--        Display characters left-->
+        <span id="message-character-count">0/140</span>
+        <!-- #8 #message #send requires a button -->
+        
+        
+        <button class="accent" onclick="sendMessage()"><i class="fas fa-arrow-right"></i></button> <!-- #9 #btns #snd now accented -->
+        
     </div>
 </div>
 
